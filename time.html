@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Time, and the design names it gives · Take a study apart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;600&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="terra terra-page" id="top">
+
+<header class="terra-ph">
+  <nav class="chbar" aria-label="Chapters"><span class="chbar-k">Chapters</span><a href="index.html">Contents</a><a href="intro.html" title="Introduction: you know the designs; why take them apart?">Intro</a><a href="lens.html" title="A recap: population, measurement and estimation">1</a><a href="time.html" aria-current="page" title="Time, and the design names it gives">2</a><a href="designs.html" title="Each design, and its own concerns">3</a><a href="your-turn.html" title="Your turn: take apart a study you have not seen">4</a><a href="describe.html" title="Descriptive epidemiology: person, place and time">5</a><a href="components.html" title="The components in detail">Components</a><a href="glossary.html">Glossary</a></nav>
+  <p class="terra-kicker">Chapter 2 of 5 · EPI-II interactive reading · Lecture, part 1</p>
+  <h1 class="terra-page-title">Time, and the design names it gives</h1>
+  <p class="terra-lede"><i>"Time takes it all, whether you want it to or not"</i> - Stephen King
+<br><br> 
+Two questions about time sort most studies into their familiar names: which way did the study trace, and when did its events happen? <br></p>
+  <div class="recall hdr-aims"><span class="recall-k">By the end of this chapter you can</span><ul class="chk-list"><li>place exposure and outcome on a timeline, and say which way the study traced;</li><li>say whether a study is historical, mixed or concurrent, and what that buys;</li><li>name a design from its features, say whether it studies people or groups, and say when each design is the usual choice.</li></ul></div>
+  <ul class="terra-toc" aria-label="Sections in this chapter"><li><a href="#s7"><b>2.1</b> Directionality and timing</a></li><li><a href="#s12"><b>2.2</b> Name it</a></li></ul>
+</header>
+
+<section class="terra-sec terra-t-anchor" id="s7" aria-labelledby="s7-t">
+  <div class="terra-sec-head">
+    <p class="terra-kicker">2.1 · Directionality and timing</p>
+    <h2 class="terra-sec-title" id="s7-t">Two time dimensions: directionality and timing</h2>
+    <svg class="terra-sec-contour" viewBox="0 0 740 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 5 C 30 1, 60 9, 90 5 S 150 1, 180 5 S 240 9, 270 5 S 330 1, 360 5 S 420 9, 450 5 S 510 1, 540 5 S 600 9, 630 5 S 690 1, 740 5"/></svg>
+  </div>
+  <div class="terra-frame"><span class="terra-chip">Time</span><span class="terra-frame-text">Which way did the study trace? Did E and O happen before the study started?</span></div>
+  <div class="terra-split">
+    <div class="terra-split-text">
+      <p>Each variable has three moments: when it <b>happened</b>, when it was <b>measured</b> (an answer given, a chart entry written, a test done), and when the team <b>collected</b> it. It could be the same date, or different. Keeping them apart gives two dimensions of time: <i>Directionality</i> and <i>Timing</i>. Together with the other components, they name the designs (<a href="#s12">section 2.2</a>).</p>
+      <h3 class="sub-head">Directionality: which way did the study trace?</h3>
+      <p>In reality, people move through time. They become at risk, may be exposed, and may develop the outcome. A study cannot watch all of this, so it takes a route in. The usual way to draw the route is an arrow between exposure (E) and outcome (O) (Kramer &amp; Boivin 1987), as in <a href="#dir">Figure 2.1</a>:</p>
+      <ul class="chk-list">
+        <li><b>Forward, E → O</b>: start with people at risk at time zero, with their exposure, then see who develops the outcome.</li>
+        <li><b>Backward, E ← O</b>: start with the outcome, then look back for exposure. The controls stand for the population at risk behind the cases (Vandenbroucke &amp; Pearce 2012).</li>
+        <li><b>Non-directional, E and O together</b>: take one slice, and see both at the same date.</li>
+      </ul>
+      <p>Each person’s clock starts at the tail of the arrow. Going forward, it starts at <b>time zero</b>. Going back, it starts at the <b>index date</b>: the case’s outcome date, which its controls are given too. For a slice, it is the <b>survey date</b>, the study’s <b>time anchor</b> (Hernán et al. 2016; Dickerman et al. 2020). Groups that are compared must start their clocks the same way.</p>
+      <p>Directionality is not how people were chosen, though the two usually go together. Most backward studies choose people by their outcome. But a study can also start with a whole register, sort everyone by outcome, and trace back (Kramer &amp; Boivin 1987).</p>
+    </div>
+    <div class="terra-split-side">
+  <figure id="dir" class="terra-widget" style="gap:8px;margin:0">
+    <div class="terra-w-head"><span class="terra-w-title"><span class="terra-w-num">Figure 2.1</span> · Directionality: which way the study traced</span><span class="terra-status">Recap</span></div>
+    <svg class="fig-svg tl4" viewBox="0 0 440 300" role="img" aria-label="Three timelines. Forward, from people at risk to the outcome: an arrow from E to O; the clock starts at time zero, at E. Backward: an arrow from O back to E; the clock starts at the index date, at O. Non-directional: E and O side by side at one date, no arrow; the clock is the survey date.">
+      <text class="ttl" x="0" y="18">Forward</text><text class="mono" x="0" y="34">from people at risk to the outcome</text>
+      <line class="ax" x1="20" y1="62" x2="420" y2="62"/>
+      <line class="arw" x1="135" y1="62" x2="278" y2="62"/><path class="ah" d="M287 62 L278 57 L278 67 Z"/>
+      <circle class="hol" cx="120" cy="62" r="13"/><text class="lh" x="120" y="66.5" text-anchor="middle">E</text>
+      <circle class="hol" cx="310" cy="62" r="13"/><text class="lh" x="310" y="66.5" text-anchor="middle">O</text>
+      <text class="mono" x="120" y="92" text-anchor="middle">clock starts at time zero</text>
+      <text class="ttl" x="0" y="118">Backward</text><text class="mono" x="0" y="134">from the outcome back to exposure</text>
+      <line class="ax" x1="20" y1="162" x2="420" y2="162"/>
+      <line class="arw" x1="295" y1="162" x2="152" y2="162"/><path class="ah" d="M143 162 L152 157 L152 167 Z"/>
+      <circle class="hol" cx="120" cy="162" r="13"/><text class="lh" x="120" y="166.5" text-anchor="middle">E</text>
+      <circle class="hol" cx="310" cy="162" r="13"/><text class="lh" x="310" y="166.5" text-anchor="middle">O</text>
+      <text class="mono" x="310" y="192" text-anchor="middle">clock starts at the index date</text>
+      <text class="ttl" x="0" y="218">Non-directional</text><text class="mono" x="0" y="234">exposure and outcome at one date</text>
+      <line class="ax" x1="20" y1="262" x2="420" y2="262"/>
+      <circle class="hol" cx="206" cy="262" r="13"/><text class="lh" x="206" y="266.5" text-anchor="middle">E</text>
+      <circle class="hol" cx="234" cy="262" r="13"/><text class="lh" x="234" y="266.5" text-anchor="middle">O</text>
+      <text class="mono" x="220" y="292" text-anchor="middle">clock: the survey date</text>
+    </svg>
+    <figcaption class="terra-w-note">The arrow is the way the study traced, and its tail is where each person’s clock starts. A slice spans no time, so it has no arrow: exposure and outcome are taken together.</figcaption>
+  </figure>
+    </div>
+  </div>
+  <div class="terra-split">
+    <div class="terra-split-text">
+      <h3 class="sub-head">Timing: did E and O happen before the study started collecting?</h3>
+      <p>Timing compares when E and O happened with the study start ▼, the date the team starts collecting. The team always collects after the start. What differs is whether the events, and the records of them, came before it. Place E and O where they happened for a typical person:</p>
+      <ul class="chk-list">
+        <li><b>Historical</b>: both before the start.</li>
+        <li><b>Mixed</b>: one on each side, usually the exposure before and the outcome after.</li>
+        <li><b>Concurrent</b>: both after the start (Kramer &amp; Boivin 1987).</li>
+      </ul>
+      <p>Timing matters because data the team plans are usually measured better. When the team collects data as events happen, it can decide who enters and leaves, how each measurement is defined, which tools measure it and how often. Historical data come with the records’ own definitions, coverage and coding changes. And if an important variable was never measured, nothing can add it later.</p>
+    </div>
+    <div class="terra-split-side">
+  <figure id="timing" class="terra-widget" style="gap:8px;margin:0">
+    <div class="terra-w-head"><span class="terra-w-title"><span class="terra-w-num">Figure 2.2</span> · Timing: before or after the study started</span><span class="terra-status">Recap</span></div>
+    <svg class="fig-svg tl4" viewBox="0 0 440 356" role="img" aria-label="Three timelines, each with the study start marked ▼ and the time before it shaded. Historical: E and O both before the start. Mixed: E before the start, O after it. Concurrent: E and O both after the start. No arrows: timing does not say which way the study traced.">
+      <text class="mono" x="125" y="12" text-anchor="middle">already happened</text><text class="mono" x="325" y="12" text-anchor="middle">after the start</text>
+      <text class="ttl" x="0" y="40">Historical</text><text class="mono" x="0" y="56">both had happened before the start</text>
+      <rect class="band" x="20" y="72" width="210" height="44"/><line class="ax" x1="20" y1="94" x2="420" y2="94"/><path class="tri" d="M224 64 L236 64 L230 73 Z"/><line class="st" x1="230" y1="73" x2="230" y2="116"/>
+      <circle class="hol" cx="90" cy="94" r="13"/><text class="lh" x="90" y="98.5" text-anchor="middle">E</text>
+      <circle class="hol" cx="170" cy="94" r="13"/><text class="lh" x="170" y="98.5" text-anchor="middle">O</text>
+      <text class="ttl" x="0" y="140">Mixed</text><text class="mono" x="0" y="156">exposure before the start, outcome after</text>
+      <rect class="band" x="20" y="172" width="210" height="44"/><line class="ax" x1="20" y1="194" x2="420" y2="194"/><path class="tri" d="M224 164 L236 164 L230 173 Z"/><line class="st" x1="230" y1="173" x2="230" y2="216"/>
+      <circle class="hol" cx="150" cy="194" r="13"/><text class="lh" x="150" y="198.5" text-anchor="middle">E</text>
+      <circle class="hol" cx="320" cy="194" r="13"/><text class="lh" x="320" y="198.5" text-anchor="middle">O</text>
+      <text class="ttl" x="0" y="240">Concurrent</text><text class="mono" x="0" y="256">both happen after the start</text>
+      <rect class="band" x="20" y="272" width="210" height="44"/><line class="ax" x1="20" y1="294" x2="420" y2="294"/><path class="tri" d="M224 264 L236 264 L230 273 Z"/><line class="st" x1="230" y1="273" x2="230" y2="316"/>
+      <circle class="hol" cx="280" cy="294" r="13"/><text class="lh" x="280" y="298.5" text-anchor="middle">E</text>
+      <circle class="hol" cx="360" cy="294" r="13"/><text class="lh" x="360" y="298.5" text-anchor="middle">O</text>
+      <path class="tri" d="M0 336 L12 336 L6 345 Z"/><text x="18" y="344">the study start: the team starts collecting</text>
+    </svg>
+    <figcaption class="terra-w-note">Where E and O sit is when they happened, against the date the team started collecting. There are no arrows: any direction can go with any timing, so a study can follow people forward through old records.</figcaption>
+  </figure>
+    </div>
+  </div>
+  <div class="terra-callout"><div class="terra-callout-body"><span class="terra-callout-lead">Check yourself.</span> A team collects data in one afternoon from hospital files covering 2019 to 2023. Is the study cross-sectional?
+    <details class="chk"><summary>One way to think about it</summary><p>Not necessarily. If the files follow each person over time, the study is longitudinal and done from records, even though the data were gathered in one afternoon. Cross-sectional means each person’s state is summarised at one time anchor. The afternoon is when the team read the files, not when E and O happened. In the two dimensions: the study traces forward from each person’s time zero, through records made before the study began, so the directionality is forward. Both E and O happened before ▼, so the timing is historical.</p></details></div></div>
+</section>
+
+<section class="terra-sec terra-t-anchor" id="s12" aria-labelledby="s12-t">
+  <div class="terra-sec-head">
+    <p class="terra-kicker">2.2 · Name it</p>
+    <h2 class="terra-sec-title" id="s12-t">Read a design off a study</h2>
+    <svg class="terra-sec-contour" viewBox="0 0 740 10" preserveAspectRatio="none" aria-hidden="true"><path d="M0 5 C 30 1, 60 9, 90 5 S 150 1, 180 5 S 240 9, 270 5 S 330 1, 360 5 S 420 9, 450 5 S 510 1, 540 5 S 600 9, 630 5 S 690 1, 740 5"/></svg>
+  </div>
+  <div class="terra-frame"><span class="terra-chip">Name it</span><span class="terra-frame-text">Traced which way? Happened when? How did the groups form? What is one row?</span></div>
+  <div class="terra-split">
+    <div class="terra-split-text">
+      <p>Directionality names three designs:</p>
+      <ul class="chk-list">
+        <li><b>Forward</b>, from the exposure or from everyone, to the outcome: a <b>cohort</b>.</li>
+        <li><b>Backward</b>, from the outcome, with cases and controls: a <b>case-control</b> study.</li>
+        <li><b>Non-directional</b>, exposure and outcome at one date: <b>cross-sectional</b>.</li>
+      </ul>
+      <p>Timing adds a second word. For a cohort, prospective means concurrent, and retrospective means historical. For other designs the words are used loosely, so say which you mean (Vandenbroucke et al. 2007, STROBE). Most case-control studies, for example, are mixed (Kramer &amp; Boivin 1987).</p>
+      <p>How the groups formed names one more. If the investigator assigned the exposure by chance, the study is a <b>randomised trial</b>; by another rule, a <b>non-randomised trial</b>.</p>
+      <p>The direction usually sets when exposure is measured. In a snapshot, exposure is measured at the same time as the outcome. In a cohort, it is measured before the outcome. In a case-control study, it is usually measured after the outcome is known, and that is where recall comes in. A nested case-control study is the exception: it can use exposure recorded long before the outcome.</p>
+      <h3 class="sub-head">One row: a person, or a group?</h3>
+      <p>One more question cuts across every design: what is one row of data? Usually it is a person. When it is a whole group, a place or a period, the study is the <b>ecological</b> version of its design (Morgenstern 1995). For example:</p>
+      <ul class="chk-list">
+        <li>rates across provinces on one date;</li>
+        <li>one country’s rates, period by period, around a policy date;</li>
+        <li>provinces followed forward from a reform, those that took it against those that did not: a cohort of provinces.</li>
+      </ul>
+      <p>The answer is then about groups, and may not hold for the people in them. Chapter 5 takes this up under place (<a href="describe.html#s-eco">section 5.3</a>).</p>
+      <p>Try it in <a href="#w11">Figure 2.3</a>: answer each question, then switch one row from a person to a group. Labels can overlap, and many studies are combinations. Ask which feature supports a label, rather than forcing a study into one box.</p>
+    </div>
+    <div class="terra-split-side">
+<design-name data-widget id="w11" data-figure="Figure 2.3"><script type="application/json">{"id":"w11","title":"From components to a name","status":"Invented study","how":"Answer for each component, then say whether one row is a person or a group. The name, the number the design can give, when exposure is measured, what it buys and its usual worry follow.","words":{"population_time":"Population and time","estimation":"Estimation","traced":"Directionality","timing":"Timing","row_is":"One row of data is","groups_formed":"How the groups formed","at_one_date":"Non-directional","forward":"Forward (E → O)","back":"Backward (E ← O)","by_people":"People or circumstance","by_chance":"Investigator, by chance","by_rule":"Investigator, another rule","historical":"Historical","concurrent":"Concurrent","mixed":"Mixed","a_person":"A person","a_group":"A group or period","svg_label":"Worksheet timeline for the chosen design","already":"already happened","after_start":"after the study start ▼","e_mark":"E","o_mark":"O","e_chance":"E set by chance","e_rule":"E set by a rule","rows_groups":"rows are groups","design_name":"design name","can_give":"it can give","exposure_measured":"Exposure measured","what_buys":"What it buys","usual_worry":"Usual worry","aria_label":"Worksheet timeline: {name}. {why}","eco_why":"One row of data is a whole group, so this is the ecological version of the design. Its answer is about groups, and may not hold for the people in them.","eco_gives":"{gives}, for each group","eco_measured":"for the group as a whole, often from routine data","eco_buys":"existing data; the right unit when the exposure is a policy or a place","eco_worry":"a group pattern may not hold for the people in it (a different question)","eco_periods":"One group followed over periods, split by a date, is a before–after comparison or an interrupted time series. Several groups followed from a policy date, some with the policy and some without, compare their trends.","cs_why":"Exposure and outcome were taken together, at one date: non-directional.","cs_locked":"Mixed timing is greyed out, because one date cannot fall on both sides of the start. An assigned exposure is greyed out too, because assigning it needs follow-up afterwards.","cc_why":"The study traces back from the outcome: backward.","cc_locked":"An assigned exposure is greyed out, because a study that starts from the outcome cannot have assigned it.","cc_mixed":"Cases are enrolled as they occur, and their exposure came earlier: mixed timing, the usual case-control study. Some call it “prospective”. That word says only that cases were collected as they occurred.","cc_historical":"Cases and controls taken from old records: historical timing.","cc_concurrent":"Concurrent timing would need the exposure, too, to happen after the start. That is possible for a short-term exposure, but rare.","rct_why":"The study traces forward, and the investigator assigned the exposure by chance. So the groups start alike, apart from chance. What happens after randomisation can still bias the answer.","nrt_why":"The investigator assigned the exposure, but not by chance: forward, with arms that can differ.","co_why":"The study traces forward from exposure, or from everyone, to the outcome.","co_concurrent":"Prospective cohort: concurrent timing.","co_historical":"Retrospective (historical) cohort: the events had already happened. The study traces them forward through records.","co_mixed":"Ambidirectional cohort: records backward, then followed forward."},"designs":{"cs":{"name":"Cross-sectional","gives":"a prevalence","exposure_measured":"at the same time as the outcome","buys":"one visit: quick and cheap","worry":"people who died, recovered or left are missed, which matters if the question is about new cases, survival or causes (selection); which came first (matters if causal)"},"co":{"name":"Cohort","gives":"a risk or a rate","exposure_measured":"before the outcome","buys":"the order of events; risks and rates","worry":"who leaves (selection); for historical, what the records measured (information)"},"cc":{"name":"Case-control","gives":"an odds ratio; no risk on its own","exposure_measured":"often after the outcome is known, unless records or stored samples came first","buys":"efficiency: a rare outcome needs few people","worry":"where controls come from (selection); exposure often recorded after the outcome is known (information)"},"rct":{"name":"Randomised trial","gives":"a risk or a rate by arm","exposure_measured":"before the outcome: assigned at the start","buys":"groups that differ only by chance","worry":"who stays (selection); whom the volunteers represent (selection, against the target)"},"nrt":{"name":"Non-randomised trial","gives":"a risk or a rate by arm","exposure_measured":"before the outcome: assigned at the start","buys":"the investigator controls the exposure","worry":"the rule may send different people to each arm (confounding, if causal)"}},"eco_names":{"cs":"Ecological, across groups at one time","co":"Ecological, over time: groups followed forward","cc":"Ecological, traced back from the outcome (rare)","rct":"Cluster randomised trial, analysed by group","nrt":"Non-randomised trial of groups, analysed by group"}}</script></design-name>
+    </div>
+  </div>
+  <h3 class="sub-head" id="grid">Directionality and timing together</h3>
+  <div class="scrollx"><table class="mtab">
+      <thead><tr><th>Directionality</th><th>Historical: both before ▼</th><th>Mixed: one each side</th><th>Concurrent: both after ▼</th></tr></thead>
+      <tbody>
+        <tr><td><b>Forward</b></td><td>Retrospective (historical) cohort: followed through old records</td><td>Ambidirectional cohort: records back, then followed on</td><td>Prospective (concurrent) cohort: followed from now</td></tr>
+        <tr><td><b>Backward</b></td><td>Case-control study from old records</td><td>Case-control study, the usual kind: cases as they occur, their exposure earlier</td><td>Case-control study, rarely: the exposure, too, after the start</td></tr>
+        <tr><td><b>Non-directional</b></td><td>Cross-sectional study of data already collected</td><td>Not possible: one date cannot fall on both sides</td><td>Cross-sectional survey</td></tr>
+      </tbody></table></div>
+      <p class="note-recall"><b>Reading the grid.</b> Down a column, the timing is the same and the direction differs. Along a row, one design takes each timing word. Every cell is possible except one, so backward does not mean old data, and a study can follow people forward through old records. Every cell also has a group version, when one row is a place or a period. A randomised trial sits in the forward row, almost always concurrent, with its groups formed by chance. To move the study start yourself and watch only the timing change, try the study clock in <a href="components.html#c-time">section C.4</a>.</p>
+  <details class="chk more"><summary>Going further: many more names</summary><p>Many more names are built from the same parts. A repeated cross-sectional survey takes new people each round. A nested case-control study draws its cases and controls inside a cohort, and a case-cohort study is a close relative. In a case-crossover study, each case is its own control at an earlier time. An ambidirectional cohort has mixed timing. Before–after studies, interrupted time series, and cluster and non-randomised trials are built the same way. The EPI-II lectures on each design take them further.</p></details>
+  <div class="refs">
+    <p class="terra-kicker" style="margin-bottom:8px">References</p>
+    <ol class="srcs" style="list-style:none;padding-left:0">
+      <li>Centers for Disease Control and Prevention. <i>Principles of Epidemiology in Public Health Practice</i>. 3rd ed. Atlanta: CDC; 2012. Lesson 1.</li>
+      <li>Dickerman BA, García-Albéniz X, Logan RW, Denaxas S, Hernán MA. Emulating a target trial in case-control designs: an application to statins and colorectal cancer. <i>Int J Epidemiol</i>. 2020;49(5):1637–1646. doi:10.1093/ije/dyaa144</li>
+      <li>Grimes DA, Schulz KF. An overview of clinical research: the lay of the land. <i>Lancet</i>. 2002;359(9300):57–61. doi:10.1016/S0140-6736(02)07283-5</li>
+      <li>Hernán MA, Sauer BC, Hernández-Díaz S, Platt R, Shrier I. Specifying a target trial prevents immortal time bias and other self-inflicted injuries in observational analyses. <i>J Clin Epidemiol</i>. 2016;79:70–75. doi:10.1016/j.jclinepi.2016.04.014</li>
+      <li>Kramer MS, Boivin JF. Toward an “unconfounded” classification of epidemiologic research design. <i>J Chronic Dis</i>. 1987;40(7):683–688. doi:10.1016/0021-9681(87)90104-4</li>
+      <li>Morgenstern H. Ecologic studies in epidemiology: concepts, principles, and methods. <i>Annu Rev Public Health</i>. 1995;16:61–81. doi:10.1146/annurev.pu.16.050195.000425</li>
+      <li>Vandenbroucke JP, von Elm E, Altman DG, et al. Strengthening the Reporting of Observational Studies in Epidemiology (STROBE): explanation and elaboration. <i>PLoS Med</i>. 2007;4(10):e297. doi:10.1371/journal.pmed.0040297</li>
+      <li>Vandenbroucke JP, Pearce N. Case–control studies: basic concepts. <i>Int J Epidemiol</i>. 2012;41(5):1480–1489. doi:10.1093/ije/dys147</li>
+      <li>World Health Organization (Bonita R, Beaglehole R, Kjellström T). <i>Basic Epidemiology</i>. 2nd ed. Geneva: WHO; 2006. Chapter 3 and Table 3.1.</li>
+    </ol>
+  </div>
+</section>
+<nav class="chnav" aria-label="Chapter navigation"><a href="lens.html"><span>Previous</span>1 · A recap: population, measurement and estimation</a><a class="next" href="designs.html"><span>Next</span>3 · Each design, and its own concerns</a></nav>
+<footer class="terra-foot">Songyos Rajborirug, M.D., Ph.D. · Brief edition, draft b9, November 2026.</footer>
+</div>
+<script src="app.js"></script>
+<script src="kit.js"></script>
+<script src="data.js"></script>
+<script src="design-name.js"></script>
+</body>
+</html>

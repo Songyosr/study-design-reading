@@ -1,0 +1,711 @@
+/* Layout concept: one long Terra explainer page. Header with the claim, then numbered sections.
+   Each section pairs a short text column with one live widget. Built on Terra 1.4 (page layer). */
+:root{
+  /* values: Terra's world (--terra-*) and the page's neutrals; meanings: Teaching shared/design/terra/DESIGN.md */
+  --sky:#f1f5fb; --paper:#ffffff; --panel:#f2f0eb; --frame-tint:#e8eff8;
+  --ink:#17324d; --heading:#1f3a5f; --muted:#5a6b7d; --rule:#c9d3dd;
+  --terra-space:#1f3a5f; --on-frame:#ffffff; --on-frame-muted:#d9e2ec;
+  --terra-sea:#1d5fa8; --terra-sea-tint:#e6eff9;
+  --terra-forest:#1f7a5a; --terra-forest-tint:#e3f2ec;
+  --terra-ground:#8b5a14; --terra-ground-tint:#fbeedd;
+  --on-component:#ffffff; --caution-ground:#fff0d8; --caution-ink:#9a3d06;
+  --data-slate:#44515e; --data-context:#b9bec3; --data-band:#eef0f2;
+  --terra-lava:#f65b25; --terra-rain:#2397cd; --signal-outline:var(--ink);
+  --status-good:#1f7a3a; --status-good-tint:#dff2e5;
+  --dim-fill:#e6e9ec; --dim-ink:#a3aeb9; --contour:#c9d3dd;
+  /* roles: what each colour is for */
+  --population:var(--terra-sea); --population-tint:var(--terra-sea-tint);
+  --measurement:var(--terra-forest); --measurement-tint:var(--terra-forest-tint);
+  --estimation:var(--terra-ground); --estimation-tint:var(--terra-ground-tint);
+  --frame:var(--terra-space); --push-up:var(--terra-lava); --push-down:var(--terra-rain);
+  --font-display:"IBM Plex Serif",Georgia,serif;
+  --font-text:"IBM Plex Sans",Arial,Tahoma,sans-serif;
+  --font-mono:"IBM Plex Mono",Menlo,Consolas,monospace;
+  --radius-sm:3px; --radius-md:5px; --radius-lg:8px; --radius-round:50%;
+  --space-xs:4px; --space-s:8px; --space-m:12px; --space-l:19px; --rule-strip:6px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --sky:#0d1218; --paper:#161e28; --panel:#23211d; --frame-tint:#1d2a3a;
+    --ink:#e6ecf2; --heading:#dbe5f1; --muted:#9aa8b6; --rule:#2c3846;
+    --terra-space:#24364f; --on-frame:#ffffff; --on-frame-muted:#b8c6d6;
+    --terra-sea:#7fa9ea; --terra-sea-tint:#1b2a40;
+    --terra-forest:#5fc49b; --terra-forest-tint:#16302a;
+    --terra-ground:#e0a865; --terra-ground-tint:#352817;
+    --on-component:#0d1218; --caution-ground:#3a2c14; --caution-ink:#f2a16a;
+    --data-slate:#aeb8c2; --data-context:#4e5a66; --data-band:#1e2833;
+    --terra-lava:#ff7d4d; --terra-rain:#5cb8e6;
+    --status-good:#6fcf8e; --status-good-tint:#163021;
+    --dim-fill:#222a33; --dim-ink:#5d6a78; --contour:#2c3846;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --sky:#0d1218; --paper:#161e28; --panel:#23211d; --frame-tint:#1d2a3a;
+  --ink:#e6ecf2; --heading:#dbe5f1; --muted:#9aa8b6; --rule:#2c3846;
+  --terra-space:#24364f; --on-frame:#ffffff; --on-frame-muted:#b8c6d6;
+  --terra-sea:#7fa9ea; --terra-sea-tint:#1b2a40;
+  --terra-forest:#5fc49b; --terra-forest-tint:#16302a;
+  --terra-ground:#e0a865; --terra-ground-tint:#352817;
+  --on-component:#0d1218; --caution-ground:#3a2c14; --caution-ink:#f2a16a;
+  --data-slate:#aeb8c2; --data-context:#4e5a66; --data-band:#1e2833;
+  --terra-lava:#ff7d4d; --terra-rain:#5cb8e6;
+  --status-good:#6fcf8e; --status-good-tint:#163021;
+  --dim-fill:#222a33; --dim-ink:#5d6a78; --contour:#2c3846;
+  color-scheme:dark;
+}
+body{margin:0;background:var(--sky);color:var(--ink);font-family:var(--font-text);font-size:16px;line-height:1.6;-webkit-text-size-adjust:100%}
+.terra,.terra *{box-sizing:border-box}
+.terra :focus-visible{outline:2px solid var(--push-down);outline-offset:2px}
+.terra-page{max-width:1160px;margin-inline:auto;padding-inline:clamp(16px,4vw,40px);padding-block:8px 48px}
+
+/* threads */
+.terra-t-anchor{--terra-t:var(--frame);--terra-tt:var(--panel);--terra-on:var(--on-frame)}
+.terra-t-a{--terra-t:var(--population);--terra-tt:var(--population-tint);--terra-on:var(--on-component)}
+.terra-t-b{--terra-t:var(--measurement);--terra-tt:var(--measurement-tint);--terra-on:var(--on-component)}
+.terra-t-c{--terra-t:var(--estimation);--terra-tt:var(--estimation-tint);--terra-on:var(--on-component)}
+
+/* chips, status, callouts */
+.terra-chip{display:inline-flex;align-items:center;padding:6px 14px;border-radius:var(--radius-sm);background:var(--terra-t);color:var(--terra-on);font-size:14px;font-weight:600;white-space:nowrap}
+.terra-chip.is-off{background:var(--dim-fill);color:var(--dim-ink)}
+.terra-status{display:inline-block;padding:2px 8px;border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--panel);color:var(--muted);font-family:var(--font-mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase}
+.terra-callout{display:flex;overflow:hidden;border-radius:var(--radius-sm);background:var(--terra-tt)}
+.terra-callout::before{content:"";flex:0 0 var(--rule-strip);background:var(--terra-t)}
+.terra-callout-body{padding:10px 16px;font-size:15px;line-height:21px}
+.terra-callout-lead{font-weight:700;color:var(--heading)}
+.terra-callout.is-caution{--terra-t:var(--caution-ink);--terra-tt:var(--caution-ground)}
+.terra-callout.is-caution .terra-callout-lead{color:var(--caution-ink)}
+
+/* page header */
+.terra-ph{position:relative;display:flex;flex-direction:column;gap:12px;padding-block:28px 24px}
+.terra-ph>*{position:relative}
+.terra-ph-art{position:absolute;right:0;top:0;width:min(34%,330px);height:auto;opacity:.9;pointer-events:none}
+.terra-ph-art path{fill:none;stroke:var(--contour);stroke-width:1.4}
+@media (max-width:760px){.terra-ph-art{display:none}}
+.terra-kicker{margin:0;font-family:var(--font-mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.terra-page-title{margin:0;max-width:19em;font-family:var(--font-display);font-weight:600;font-size:clamp(2rem,5vw,3.25rem);line-height:1.12;color:var(--heading);text-wrap:balance}
+.terra-lede{margin:0;max-width:62ch;font-size:1.1rem;line-height:1.6}
+.terra-scope{margin:0;max-width:62ch;font-size:.9rem;color:var(--muted)}
+.terra-toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;padding:0;list-style:none}
+.terra-toc a{display:inline-flex;align-items:baseline;gap:6px;padding:5px 12px;border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper);color:var(--ink);font-size:.88rem;text-decoration:none}
+.terra-toc a:hover{border-color:var(--ink)}
+.terra-toc b{font-family:var(--font-mono);font-weight:500;font-size:.78rem;color:var(--muted)}
+
+/* sections */
+.terra-sec{display:flex;flex-direction:column;gap:18px;padding-block:40px;border-top:1px solid var(--rule);scroll-margin-top:8px}
+.terra-sec-head{display:flex;flex-direction:column;gap:8px;max-width:74ch}
+.terra-sec .terra-kicker{color:var(--terra-t)}
+.terra-sec.terra-t-anchor .terra-kicker{color:var(--muted)}
+.terra-sec-title{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(1.5rem,3vw,2.1rem);line-height:1.18;color:var(--heading);text-wrap:balance}
+.terra-sec-contour{display:block;width:100%;max-width:74ch;height:10px;margin-top:2px}
+.terra-sec-contour path{fill:none;stroke:var(--contour);stroke-width:1.4}
+.terra-frame{display:flex;align-items:stretch;min-height:37px;border-radius:var(--radius-sm);background:var(--frame-tint);max-width:74ch}
+.terra-frame>.terra-chip{border-radius:var(--radius-sm) 0 0 var(--radius-sm)}
+.terra-frame-text{flex:1;display:flex;align-items:center;padding:6px 14px;font-size:1rem;font-weight:600}
+.terra-split{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,40px);align-items:start}
+@media (max-width:860px){.terra-split{grid-template-columns:minmax(0,1fr)}}
+.terra-split-text{min-width:0;max-width:64ch;line-height:1.62}
+.terra-split-text p{margin:0 0 12px}
+.terra-split-side{min-width:0}
+.terra-num{font-family:var(--font-mono);font-size:.92em;font-variant-numeric:tabular-nums}
+
+/* widget frame */
+.terra-widget{display:flex;flex-direction:column;gap:12px;min-width:0;padding:14px 16px 16px;border:1px solid var(--rule);border-radius:var(--radius-lg);background:var(--paper)}
+.terra-w-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.terra-w-title{margin-right:auto;font-family:var(--font-mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.terra-w-how{margin:0;padding:8px 10px;border-radius:var(--radius-sm);background:var(--panel);font-size:.9rem;line-height:1.45}
+.terra-w-how b{font-family:var(--font-mono);font-size:.72rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.terra-w-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.terra-w-body{min-width:0}
+.terra-w-note{margin:0;font-size:.84rem;color:var(--muted)}
+.ctl-label{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.terra-readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.terra-read{min-width:0;padding:7px 10px;border:1px solid var(--rule);border-radius:var(--radius-md)}
+.terra-read b{display:block;font-family:var(--font-mono);font-size:1.05rem;font-weight:500;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.terra-read span{display:block;font-size:.78rem;line-height:1.3;color:var(--muted)}
+.terra-read.is-hl{border-color:var(--terra-t);background:var(--terra-tt)}
+.terra-read.is-hl b{color:var(--heading)}
+.terra-seg{display:inline-flex;flex-wrap:wrap;gap:1px;overflow:hidden;border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--rule);max-width:100%}
+.terra-seg button{flex:1 1 auto;min-height:36px;padding:6px 12px;border:0;background:var(--paper);color:var(--ink);font:inherit;font-size:.86rem;cursor:pointer}
+.terra-seg button:hover{background:var(--panel)}
+.terra-seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.terra-slider{display:grid;grid-template-columns:minmax(8em,13em) minmax(0,1fr) 4.6em;align-items:center;gap:10px;font-size:.88rem}
+.terra-slider input{width:100%;min-height:28px;accent-color:var(--terra-t,var(--population))}
+.terra-slider output{font-family:var(--font-mono);text-align:right;font-variant-numeric:tabular-nums}
+.terra-slider input:disabled{opacity:.5}
+@media (max-width:520px){.terra-slider{grid-template-columns:minmax(0,1fr) 4.6em}.terra-slider span{grid-column:1/-1}}
+.btn{min-height:36px;padding:6px 14px;border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper);color:var(--ink);font:inherit;font-size:.86rem;cursor:pointer}
+.btn:hover{border-color:var(--ink)}
+.btn.is-primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.scrollx{overflow-x:auto;border-radius:var(--radius-md)}
+.swipe-hint{display:none;margin:0;font-size:.8rem;color:var(--muted)}
+@media (max-width:640px){.swipe-hint{display:block}}
+.fig-svg{display:block;width:100%;height:auto;overflow:visible}
+.scrollx .fig-svg{min-width:560px}
+.fig-svg text{font-family:var(--font-text);font-size:12px;fill:var(--ink)}
+.fig-svg .mono{font-family:var(--font-mono);font-size:11px;fill:var(--muted)}
+.fig-svg .strong{font-weight:600}
+.fig-svg .knock{paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+.fig-svg .muted{fill:var(--muted)}
+.fig-svg .tick{stroke:var(--rule);stroke-width:1}
+.fig-svg .axis{stroke:var(--rule);stroke-width:1.2}
+.fig-svg .ref{fill:none;stroke:var(--terra-t,var(--population));stroke-width:1.6;stroke-dasharray:5 4}
+.fig-svg .ref-heading{fill:none;stroke:var(--heading);stroke-width:1.6;stroke-dasharray:5 4}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none;font-size:.82rem;color:var(--muted)}
+.legend li{display:inline-flex;align-items:center;gap:6px}
+.legend svg{flex:none}
+figure{margin:0;min-width:0}
+figcaption{margin-top:4px;font-size:.8rem;color:var(--muted)}
+
+/* shared dot styles */
+.d-case{fill:var(--data-slate)}
+.d-no{fill:var(--paper);stroke:var(--data-context);stroke-width:1.5}
+.d-ring{fill:none;stroke:var(--ink);stroke-width:2}
+.d-fp{fill:var(--push-down);stroke:var(--signal-outline);stroke-width:1.4}
+.d-fn{fill:var(--push-up);stroke:var(--signal-outline);stroke-width:1.4}
+.d-flat{fill:var(--data-slate);stroke:var(--signal-outline);stroke-width:1.2}
+.d-case-dim{fill:var(--data-slate);opacity:.28}
+
+/* widget 1 */
+.hl{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:var(--radius-md);background:var(--panel)}
+.hl-num{font-family:var(--font-display);font-weight:600;font-size:clamp(1.35rem,3vw,1.9rem);line-height:1.2;color:var(--heading)}
+.hl-src{font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+[hidden]{display:none !important}
+.asks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.ask{display:flex;flex-direction:column;min-width:0;border:1px solid var(--rule);border-top:4px solid var(--rule);border-radius:var(--radius-md);background:var(--paper)}
+.ask.is-open{border-top-color:var(--terra-t);background:var(--terra-tt)}
+.ask-q{min-height:44px;padding:10px 12px;border:0;background:transparent;color:var(--ink);font:inherit;font-size:.95rem;font-weight:600;text-align:left;cursor:pointer}
+.ask-a{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding:0 12px 12px;font-size:.9rem;line-height:1.45}
+.ask-a .terra-chip{padding:3px 10px;font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+
+/* widget 2 */
+.w2-figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;align-items:start}
+.w2-figs .fig-svg text.t-lab{font-size:12px}
+.pred-fb{margin:0;font-size:.9rem;min-height:1.4em}
+.p-note{margin:0;font-size:.9rem}
+
+/* widget 4 */
+.q-line{margin:0;font-size:.98rem;font-weight:600;color:var(--heading)}
+.band{fill:var(--data-band)}
+.s-free{stroke:var(--data-context);stroke-width:2;stroke-linecap:round}
+.s-case{stroke:var(--data-slate);stroke-width:5;stroke-linecap:butt}
+.s-risk{stroke:var(--ink);stroke-width:5;stroke-linecap:butt}
+.onset{fill:var(--paper);stroke:var(--data-slate);stroke-width:2.5}
+.ex-move{fill:var(--muted)}
+.ex-died{fill:var(--ink)}
+.mk-ring{fill:none;stroke:var(--ink);stroke-width:1.8}
+.is-dim{opacity:.38}
+.lab-num{font-weight:700}
+
+/* widget 5 */
+.past{fill:var(--data-band)}
+.ev-past{fill:var(--data-slate)}
+.ev-future{fill:var(--paper);stroke:var(--data-slate);stroke-width:2;stroke-dasharray:4 3}
+.ev-point{fill:var(--data-slate);stroke:var(--signal-outline);stroke-width:1.2}
+.bracket{fill:none;stroke:var(--data-slate);stroke-width:1.5}
+
+/* widget 6 */
+.vign{margin:0;padding:14px 16px;border-radius:var(--radius-md);background:var(--panel);font-size:1rem;line-height:2.1}
+.ph{display:inline;padding:1px 3px;border-bottom:2px dashed var(--muted);border-radius:var(--radius-sm);background:transparent;color:var(--ink);cursor:pointer;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.ph:hover{background:var(--paper)}
+.ph[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:1px}
+.ph.is-t-a{background:var(--population-tint);border-bottom:2px solid var(--population)}
+.ph.is-t-b{background:var(--measurement-tint);border-bottom:2px solid var(--measurement)}
+.ph.is-t-c{background:var(--estimation-tint);border-bottom:2px solid var(--estimation)}
+.ph.is-t-anchor{background:var(--frame-tint);border-bottom:2px solid var(--heading)}
+.ph sup{margin-left:4px;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tagbar{display:flex;flex-wrap:wrap;gap:8px}
+.tagbtn{min-height:36px;padding:6px 14px;border:0;border-radius:var(--radius-sm);background:var(--terra-t);color:var(--terra-on);font:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
+.tagbtn:disabled{background:var(--dim-fill);color:var(--dim-ink);cursor:default}
+.fb{margin:0;padding:10px 12px;border-radius:var(--radius-md);background:var(--panel);font-size:.92rem;line-height:1.5;min-height:3.2em}
+.missing{padding:10px 14px;border-radius:var(--radius-md);background:var(--caution-ground);font-size:.92rem}
+.missing b{color:var(--caution-ink)}
+.missing ul{margin:6px 0 0;padding-left:1.2em}
+
+/* recap */
+.terra-impl{display:flex;flex-direction:column;gap:var(--space-s);margin:0;padding:0;list-style:none}
+.terra-impl-item{display:grid;grid-template-columns:minmax(0,11.5em) minmax(0,1fr);gap:8px 16px;align-items:start;padding:var(--space-m) 16px;border-radius:var(--radius-md);background:var(--panel)}
+@media (max-width:640px){.terra-impl-item{grid-template-columns:minmax(0,1fr)}}
+/* the front page's scope note (8 November 2026; only the page with chapter cards): the byline a quiet line under the header with a rule; each way in ("Before class…", a bold label, then text) a row like .terra-impl-item; the closing line muted */
+.terra-page:has(> .chcards) > .terra-ph + p.terra-scope{max-width:48rem;padding-block:0 var(--space-m);border-bottom:1px solid var(--rule);font-size:.88rem}
+.terra-page:has(> .chcards) > .terra-ph + p.terra-scope b{color:var(--heading);font-weight:600}
+.terra-page:has(> .chcards) > .terra-ph + p.terra-scope ~ p.terra-scope:has(> b){display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:4px 16px;align-items:baseline;max-width:48rem;margin-top:8px;padding:var(--space-m) 16px;border-radius:var(--radius-md);background:var(--panel);color:var(--ink);font-size:.95rem;line-height:1.5}
+.terra-page:has(> .chcards) > .terra-ph + p.terra-scope ~ p.terra-scope:has(> b) > b{color:var(--heading)}
+.terra-page:has(> .chcards) > .terra-ph + p.terra-scope + p.terra-scope{margin-top:var(--space-l)}
+.terra-page:has(> .chcards) > .terra-ph + p.terra-scope ~ p.terra-scope:not(:has(> b)){margin-block:var(--space-m) var(--space-l)}
+@media (max-width:640px){.terra-page:has(> .chcards) > .terra-ph + p.terra-scope ~ p.terra-scope:has(> b){grid-template-columns:minmax(0,1fr)}}
+.terra-impl-title{font-size:1.05rem;font-weight:700;color:var(--heading)}
+.terra-impl-detail{font-size:.92rem}
+.srcs{margin:0;padding-left:1.3em;font-size:.84rem;color:var(--muted);line-height:1.5}
+.srcs li{margin-bottom:4px}
+.terra-foot{padding-top:20px;border-top:1px solid var(--rule);font-size:.82rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+/* v3 additions: time inside each domain, sources, optional explanations, prediction gate, time toggle */
+.t-here{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;margin:4px 0 14px;padding:10px 14px;border-left:var(--rule-strip) solid var(--frame);border-radius:var(--radius-sm);background:var(--frame-tint);font-size:.92rem;line-height:1.5}
+.t-here-k{padding-top:2px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--heading);white-space:nowrap}
+@media (max-width:520px){.t-here{grid-template-columns:minmax(0,1fr)}}
+.terra-split-text p.src-line{margin:0;font-size:.82rem;line-height:1.45;color:var(--muted)}
+.chk{margin-top:6px}
+.chk summary{min-height:28px;padding-top:2px;font-size:.9rem;font-weight:600;color:var(--heading);cursor:pointer}
+.chk p{margin:4px 0 2px}
+.gate{margin:0;padding:12px 14px;border:1px dashed var(--rule);border-radius:var(--radius-md);font-size:.9rem;color:var(--muted)}
+.tagbtn.is-time{background:var(--paper);color:var(--heading);box-shadow:inset 0 0 0 2px var(--heading)}
+.tagbtn.is-time[aria-pressed="true"]{background:var(--heading);color:var(--paper)}
+.tagbtn.is-time:disabled{background:var(--dim-fill);color:var(--dim-ink);box-shadow:none}
+.tag-sep{align-self:center;width:1px;height:24px;background:var(--rule)}
+.ph.has-time{box-shadow:inset 0 -3px 0 var(--heading)}
+.unk{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:3 2}
+.s-person{stroke:var(--data-slate);stroke-width:3;stroke-linecap:butt}
+.s-person-f{stroke:var(--data-slate);stroke-width:2;stroke-dasharray:4 3}
+.btn:disabled{opacity:.45;cursor:default}
+.btn:disabled:hover{border-color:var(--rule)}
+.p-origin{fill:var(--paper);stroke:var(--data-slate);stroke-width:2}
+/* v4: declined invitations, glossary */
+.d-ring-dec{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:2.5 2}
+.src-line{margin:0;font-size:.82rem;line-height:1.45;color:var(--muted)}
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:14px;align-items:start}
+.gloss-group{min-width:0;padding:14px 16px 12px;border-top:4px solid var(--terra-t);border-radius:var(--radius-md);background:var(--panel)}
+.gloss-group dl{margin:8px 0 0}
+.gloss-group dt{margin-top:10px;font-weight:700;color:var(--heading)}
+.gloss-group dt:first-child{margin-top:0}
+.gloss-group dd{margin:2px 0 0;font-size:.92rem;line-height:1.5}
+
+/* v5: opening tree, goal and components, population flow, measurement table, time cards, two districts */
+.tree text{font-size:12px}
+.tree .q{fill:var(--frame-tint);stroke:var(--rule)}
+.tree .leaf{fill:var(--frame)}
+.tree .leaf-t{fill:var(--on-frame);font-weight:600}
+.tree .edge{fill:none;stroke:var(--muted);stroke-width:1.3}
+.tree .yn{font-family:var(--font-mono);font-size:10.5px;fill:var(--muted)}
+.ilo{margin:0 0 12px;padding:10px 14px 10px 32px;border-radius:var(--radius-md);background:var(--panel)}
+.ilo li{margin:2px 0}
+.gc{display:flex;flex-direction:column;gap:8px;margin:4px 0 14px}
+.gc-row{display:grid;grid-template-columns:minmax(0,8.5em) repeat(3,minmax(0,1fr));gap:8px;align-items:stretch}
+@media (max-width:560px){.gc-row{grid-template-columns:repeat(3,minmax(0,1fr))}.gc-k{grid-column:1/-1}}
+.gc-k{align-self:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.gc-box{display:flex;align-items:center;justify-content:center;min-height:44px;padding:6px 8px;border-radius:var(--radius-sm);font-size:.88rem;font-weight:600;text-align:center;line-height:1.25}
+.gc-goal .gc-box{border:1px dashed var(--muted);color:var(--muted);background:var(--paper)}
+.gc-comp .gc-box{background:var(--terra-t);color:var(--terra-on)}
+.gc-arrow{padding-left:calc(8.5em + 8px);font-size:.82rem;color:var(--muted)}
+@media (max-width:560px){.gc-arrow{padding-left:0}}
+.gc-time{margin-left:calc(8.5em + 8px);padding:6px 10px;border-radius:var(--radius-sm);background:var(--frame);color:var(--on-frame);font-size:.84rem;text-align:center}
+@media (max-width:560px){.gc-time{margin-left:0}}
+.gc-today{font-size:.8rem;font-weight:700;color:var(--heading)}
+.flow{display:flex;flex-direction:column;gap:0;margin:4px 0 14px;padding:0;list-style:none}
+.flow-box{display:flex;flex-direction:column;gap:2px;padding:10px 14px;border:2px solid var(--population);border-radius:var(--radius-md);background:var(--population-tint)}
+.flow-box b{color:var(--population)}
+.flow-box em{font-style:normal;font-size:.88rem;color:var(--muted)}
+.flow-sub{margin-top:6px;padding:6px 10px;border:1.5px dashed var(--population);border-radius:var(--radius-sm);background:var(--paper);font-size:.88rem}
+.flow-step{position:relative;padding:6px 0 6px 34px;font-size:.84rem;color:var(--muted)}
+.flow-step::before{content:"↓";position:absolute;left:12px;top:3px;font-size:1.1rem;color:var(--population)}
+.mtab{width:100%;border-collapse:collapse;font-size:.86rem;line-height:1.4;min-width:520px}
+.mtab th,.mtab td{padding:7px 8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+.mtab th{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mtab td:first-child{font-weight:700;color:var(--measurement)}
+.tcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;align-items:start}
+.tcard{display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px 16px;border-top:4px solid var(--terra-t);border-radius:var(--radius-md);background:var(--paper);border-left:1px solid var(--rule);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.tcard h3{margin:0;font-size:1rem;line-height:1.3;color:var(--heading)}
+.tcard p{margin:0;font-size:.92rem;line-height:1.5}
+.tcard .chip-row{display:flex}
+.mini{display:flex;flex-direction:column;gap:8px;margin-top:4px;padding:10px 12px;border-radius:var(--radius-md);background:var(--panel)}
+.sub-head{margin:6px 0 0;font-family:var(--font-display);font-size:1.25rem;font-weight:600;color:var(--heading)}
+.bar-a{fill:var(--estimation)}
+.bar-b{fill:var(--data-slate)}
+.meas-intro{display:flex;flex-direction:column;gap:12px;max-width:900px;line-height:1.62}
+.meas-intro p{margin:0;max-width:74ch}
+.mini .terra-slider{grid-template-columns:minmax(0,1fr) 3em}
+.mini .terra-slider span{grid-column:1/-1}
+
+/* v7: recall and terms, failure table, practice */
+.recall{display:flex;flex-direction:column;gap:10px;padding:14px 16px;border-radius:var(--radius-md);background:var(--panel)}
+.recall p{margin:0;max-width:78ch;line-height:1.6}
+.recall-k{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:10px}
+.rcell{display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-top:4px solid var(--terra-t);border-radius:var(--radius-sm);background:var(--paper);font-size:.9rem;line-height:1.45}
+.rcell b{color:var(--heading)}
+.ttab td:first-child{color:var(--heading)}
+.note-recall{margin:0;padding:8px 12px;border-left:4px solid var(--rule);border-radius:var(--radius-sm);background:var(--panel);font-size:.92rem;line-height:1.55}
+.note-recall b{color:var(--heading)}
+.fail{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px;align-items:stretch}
+.fcard{display:flex;flex-direction:column;gap:6px;min-width:0;padding:14px 16px;border-top:4px solid var(--terra-t);border-radius:var(--radius-md);background:var(--terra-tt, var(--panel))}
+.fcard .chip-row{display:flex}
+.fcard h3{margin:0;font-size:1rem;line-height:1.35;color:var(--heading);font-family:var(--font-display);font-weight:600}
+.fcard .fk{margin-top:4px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fcard .fname{margin:0;font-size:1.05rem;font-weight:700;color:var(--terra-t)}
+.fcard p{margin:0;font-size:.92rem;line-height:1.5}
+.fbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-md);background:var(--panel);font-size:.95rem;font-weight:600;color:var(--heading)}
+.fbar.is-time{background:var(--frame);color:var(--on-frame)}
+.fbar .fbar-k{padding:2px 10px;border-radius:var(--radius-sm);background:var(--heading);color:var(--paper);font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.fbar.is-time .fbar-k{background:var(--on-frame);color:var(--frame)}
+.flaw{margin:0;padding:14px 16px;border-radius:var(--radius-md);background:var(--panel);font-size:1rem;line-height:1.6}
+.flaw-n{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choices .btn[aria-pressed="true"]{background:var(--heading);color:var(--paper);border-color:var(--heading)}
+/* v8: ideal study per goal, the four-step move, causal-only question, direction in the study clock */
+.gc-goal .gc-box{flex-direction:column;gap:3px}
+.gc-ideal{font-size:.74rem;font-weight:400;line-height:1.3;color:var(--muted)}
+.gc-causal{margin:0 0 0 calc(8.5em + 8px);padding:6px 10px;border:1px dashed var(--muted);border-radius:var(--radius-sm);font-size:.84rem;color:var(--muted);text-align:center}
+@media (max-width:560px){.gc-causal{margin-left:0}}
+.steps{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:4px;line-height:1.55;max-width:78ch}
+.fbar.is-causal{background:var(--paper);border:1px dashed var(--muted);color:var(--muted)}
+.fbar.is-causal .fbar-k{background:var(--muted);color:var(--paper)}
+.p-outcome{fill:var(--data-slate)}
+.p-arrow{fill:var(--heading)}
+/* v9: on wide screens the shorter column of each split stays in view; selection lean on the district grid */
+@media (min-width:861px){
+  .terra-split>.terra-split-text,.terra-split>.terra-split-side{position:sticky;top:var(--stick,16px)}
+}
+.flow-side{margin:0}
+.lean-note{margin:6px 0 0;min-height:1.4em;font-size:.84rem;line-height:1.4;color:var(--muted)}
+.lean-note b{color:var(--ink)}
+.lean-up{fill:var(--push-down)}
+.lean-down{fill:var(--push-up)}
+/* v10: worksheet simulator, workshop preview, unequal periods */
+.sheet-q{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin:0;font-size:.9rem}
+.sheet-q b{min-width:9.5em;color:var(--heading)}
+.sheet-q select{font:inherit;font-size:.88rem;padding:4px 6px;border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper);color:var(--ink);max-width:100%}
+.sheet-box{display:flex;flex-direction:column;gap:8px;padding:10px 12px;border:1px solid var(--rule);border-radius:var(--radius-md);background:var(--panel)}
+.sheet-box .sk{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.tl-row{display:grid;grid-template-columns:2.2em repeat(11,minmax(0,1fr)) auto;gap:3px;align-items:center}
+.tl-row .who{font-weight:700;color:var(--heading)}
+.tl-cell{min-height:30px;padding:0;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.tl-cell.past{background:var(--data-band)}
+.tl-cell.zero{border:2px solid var(--heading)}
+.tl-cell[aria-pressed="true"]{background:var(--heading);color:var(--paper)}
+.tl-scale{display:grid;grid-template-columns:2.2em 5fr 1fr 5fr auto;gap:3px;font-size:.72rem;color:var(--muted)}
+.tl-scale span:nth-child(3){text-align:center;color:var(--heading);font-weight:700}
+.tl-scale span:nth-child(4){text-align:right}
+.chk-list{margin:0;padding-left:1.1em;font-size:.88rem;line-height:1.5}
+.chk-list li{margin:2px 0}
+/* the practice sheet's five rows (worksheet v6, 7 November 2026); row 4's components take the preview's thread rule */
+.ws-row{display:flex;flex-direction:column;gap:8px;padding-top:10px;border-top:1px solid var(--rule)}
+.ws-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--heading);font-weight:600}
+.ws-comps{display:flex;flex-direction:column;gap:8px}
+.ws-comp{display:flex;flex-direction:column;gap:6px;padding:8px 10px;border-top:3px solid var(--terra-t);border-radius:var(--radius-sm);background:var(--paper)}
+.ws-comp > b{color:var(--heading);font-size:.92rem}
+.ws-fact{margin:0;font-size:.88rem;line-height:1.45}
+.ws-fact.is-empty{color:var(--muted);font-style:italic}
+.ws-gap{margin:0;padding:8px 10px;border-radius:var(--radius-sm);background:var(--paper);font-size:.92rem;line-height:1.45}
+.ws-own{flex-direction:column;align-items:stretch}
+.ws-own textarea{font:inherit;font-size:.9rem;padding:6px 8px;border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper);color:var(--ink);resize:vertical}
+.ws-model{margin:0;padding:8px 10px;border-radius:var(--radius-sm);background:var(--frame-tint);font-size:.9rem;line-height:1.45}
+.chk-list .chk-h{list-style:none;margin:8px 0 2px -1.1em;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chk-list .ok{color:var(--status-good);font-weight:700}
+.chk-list .no{color:var(--caution-ink);font-weight:700}
+.preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:6px}
+.preview div{padding:6px 8px;border-top:3px solid var(--terra-t);border-radius:var(--radius-sm);background:var(--paper);font-size:.82rem;line-height:1.35}
+.preview b{display:block;color:var(--heading)}
+.hint{font-size:.8rem;color:var(--muted)}
+/* v11: directionality and timing; the arrow timeline; four studies on one timeline */
+.tl-cell[aria-pressed="true"]{background:var(--paper);color:var(--heading);border:2px solid var(--heading)}
+.tl-cell.entry[aria-pressed="true"]{background:var(--heading);color:var(--paper)}
+.tl-arrow-row{min-height:14px}
+.tl-arr{position:relative;height:14px}
+.tl-arr::before{content:"";position:absolute;top:6px;left:var(--a0);right:var(--a0);border-top:2px solid var(--push-up)}
+.tl-arr .hd{position:absolute;top:2px;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.tl-arr.r .hd{right:calc(var(--a0) - 3px);border-left:9px solid var(--push-up)}
+.tl-arr.l .hd{left:calc(var(--a0) - 3px);border-right:9px solid var(--push-up)}
+.chk-list .info{color:var(--heading);font-weight:700}
+.tl4 .band{fill:var(--data-band)}
+.tl4 .ax{stroke:var(--muted);stroke-width:1}
+.tl4 .st{stroke:var(--heading);stroke-width:1.4;stroke-dasharray:3 3}
+.tl4 .tri,.tl4 .full{fill:var(--heading)}
+.tl4 .full{stroke:var(--heading);stroke-width:1.6}
+.tl4 .hol{fill:var(--paper);stroke:var(--heading);stroke-width:1.6}
+.tl4 text.lf{fill:var(--paper);font-weight:700;font-size:13px}
+.tl4 text.lh{fill:var(--heading);font-weight:700;font-size:13px}
+.tl4 .arw{stroke:var(--push-up);stroke-width:2;fill:none}
+.tl4 .ah{fill:var(--push-up)}
+.tl4 .ms{fill:var(--measurement)}
+.tl4 .gap{stroke:var(--measurement);stroke-width:1.3;stroke-dasharray:2 3;fill:none}
+.tl4 .chip{fill:var(--measurement-tint);stroke:var(--measurement);stroke-width:1}
+.tl4 text.ck{fill:var(--measurement);font-size:11px}
+.tl4 text.cv{fill:var(--heading);font-weight:600}
+.tl4 text.ttl{fill:var(--heading);font-weight:600;font-size:13px}
+/* v12: one colour story. Fill = true status; magma = a process pushes the count towards the condition, cloud = away from it */
+.s-risk{stroke:var(--estimation)}
+.d-fp{fill:var(--paper);stroke:var(--push-up);stroke-width:2.2}
+.d-fn{fill:var(--push-down);stroke:var(--push-down);stroke-width:1.2}
+.push-up{fill:var(--push-up);stroke:var(--signal-outline);stroke-width:1.2}
+.push-down{fill:var(--push-down);stroke:var(--signal-outline);stroke-width:1.2}
+.t-up{color:var(--push-up)}
+.t-down{color:var(--push-down)}
+.squig{fill:none;stroke:var(--measurement);stroke-width:2.2;stroke-linejoin:round}
+.band-rel{fill:var(--rule);opacity:.45}
+.tl-arr::before{border-top-color:var(--heading)}
+.tl-arr.r .hd{border-left-color:var(--heading)}
+.tl-arr.l .hd{border-right-color:var(--heading)}
+.tl4 .arw{stroke:var(--heading)}
+.tl4 .ah{fill:var(--heading)}
+.mtab td:first-child{font-weight:600;color:var(--heading)}
+
+/* v14 · Part 2 */
+.trade th:first-child{width:22%}
+.trade td.gain{color:var(--status-good)}
+.trade td.cost{color:var(--caution-ink)}
+.srcdl{display:grid;grid-template-columns:minmax(7em,9em) 1fr;gap:6px 12px;margin:0;font-size:.9rem;line-height:1.45}
+.srcdl dt{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.srcdl dd{margin:0}
+.chkrow{display:flex;flex-wrap:wrap;gap:8px}
+.chkrow label{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:4px 12px;border:1px solid var(--rule);border-radius:var(--radius-sm);background:var(--paper);font-size:.86rem;cursor:pointer}
+.chkrow input{accent-color:var(--measurement)}
+.p2 .ln-rec{fill:none;stroke:var(--heading);stroke-width:2.4}
+.p2 .ln-true{fill:none;stroke:var(--muted);stroke-width:1.6;stroke-dasharray:5 4}
+.p2 .gap-up{fill:var(--push-up);opacity:.28}
+.p2 .gap-down{fill:var(--push-down);opacity:.28}
+.p2 .mk{stroke:var(--muted);stroke-width:1;stroke-dasharray:2 3}
+.p2 .bar{fill:var(--data-slate)}
+.p2 .bar.hi,.p2 .bar.lo{fill:var(--data-slate);stroke:var(--ink);stroke-width:2}
+.p2 .truth{stroke:var(--heading);stroke-width:1.6;stroke-dasharray:6 4}
+.p2 .seg-y{fill:var(--estimation-tint);stroke:var(--estimation);stroke-width:1}
+.p2 .seg-o{fill:var(--estimation);stroke:var(--estimation);stroke-width:1}
+.p2 .ink{fill:var(--ink);font-size:12px}
+.p2 .tl-base{stroke:var(--data-slate);stroke-width:2}
+.p2 .tl-band{fill:var(--data-band)}
+.p2 .tl-start{stroke:var(--heading);stroke-width:1.6;stroke-dasharray:4 3}
+.p2 .tl-tri{fill:var(--heading)}
+.p2 .tl-arr{stroke:var(--heading);stroke-width:2.2;fill:none}
+.p2 .tl-ah{fill:var(--heading)}
+.p2 .tl-full{fill:var(--heading);stroke:var(--heading);stroke-width:1.6}
+.p2 .tl-hol{fill:var(--paper);stroke:var(--heading);stroke-width:1.6}
+.p2 .tl-grp{fill:var(--estimation-tint);stroke:var(--estimation);stroke-width:1.4}
+.p2 text.lf{fill:var(--paper);font-weight:700;font-size:13px}
+.p2 text.lh{fill:var(--heading);font-weight:700;font-size:13px}
+
+
+/* v15 · chapters */
+.chbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 2px;font-size:.84rem}
+.chbar a{padding:4px 10px;border:1px solid var(--rule);border-radius:var(--radius-sm);color:var(--heading);text-decoration:none;background:var(--paper)}
+.chbar a[aria-current="page"]{background:var(--frame);border-color:var(--frame);color:var(--on-frame)}
+.chbar .chbar-k{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.chnav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin:28px 0 8px;padding-top:16px;border-top:1px solid var(--rule)}
+.chnav a{display:inline-flex;flex-direction:column;gap:2px;min-width:12em;padding:10px 14px;border:1px solid var(--rule);border-radius:var(--radius-md);background:var(--paper);color:var(--heading);text-decoration:none}
+.chnav a span{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.chnav a.next{text-align:right;margin-left:auto}
+.chcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:18px 0}
+.chcard{display:flex;flex-direction:column;gap:8px;padding:16px 18px;border-top:4px solid var(--terra-t);border-radius:var(--radius-md);background:var(--panel);color:var(--ink);text-decoration:none}
+.chcard b{font-family:var(--font-display);font-size:1.2rem;color:var(--heading)}
+.chcard .k{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.chcard ul{margin:0;padding-left:1.1em;font-size:.88rem;line-height:1.45}
+.chcard .when{font-size:.82rem;color:var(--muted)}
+.tree .flag{fill:none;stroke:var(--caution-ink);stroke-width:2;stroke-dasharray:4 3}
+.grp-k{margin:6px 0 0;padding-left:8px;border-left:4px solid var(--terra-t);font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--heading)}
+.stitch{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;text-align:center}
+.stitch .gc-box{display:flex;flex-direction:column;gap:2px;padding:10px 8px;border-radius:var(--radius-md);background:var(--terra-tt);border-top:4px solid var(--terra-t);font-weight:600;color:var(--heading)}
+.stitch .gc-box small{font-weight:400;font-size:.78rem;color:var(--ink)}
+.stitch-time{grid-column:1/-1;padding:6px;border-radius:var(--radius-md);background:var(--frame);color:var(--on-frame);font-size:.86rem}
+.stitch-arrow{grid-column:1/-1;font-size:1.4rem;color:var(--heading);line-height:1}
+.stitch-name{grid-column:1/-1;padding:10px;border:2px solid var(--heading);border-radius:var(--radius-md);font-family:var(--font-display);font-size:1.15rem;color:var(--heading)}
+
+/* v16 · introduction, chapter aims, going-further notes */
+.more{margin-top:4px;padding:8px 14px;border:1px dashed var(--rule);border-radius:var(--radius-md);background:var(--paper)}
+.more summary{font-size:.88rem}
+.more p{font-size:.9rem;line-height:1.55}
+.hdr-aims{margin-top:6px;max-width:78ch}
+.hdr-aims .chk-list{margin-top:4px}
+
+/* 5 October 2026, decided with Tonn: wide-screen fixes. The "Time"-style frame bar spans the section,
+   like the box below it; full-width figures stop near their drawn size so their labels stay at
+   body-text size instead of growing about 1.5 times. */
+.terra-frame{max-width:none}
+.fig-svg.tl4,.fig-svg.tree{max-width:760px;margin-inline:auto}
+
+/* 5 October 2026, decided with Tonn: Obsidian-style marks in page text (sewn 0.4.0). ==words== is a
+   highlight in the caution colour at 22% (it reads in light and dark); [^1] footnotes get a raised number and a numbered list at the
+   end of the page; display maths ($$…$$) scrolls sideways on a narrow screen instead of overflowing. */
+mark{background:color-mix(in srgb,var(--caution-ink) 22%,transparent);color:inherit;padding:0 .12em;border-radius:2px}
+.fn-ref{font-size:.72em;line-height:0;margin-left:1px}
+.fn-ref a{text-decoration:none}
+.fn-notes .srcs{list-style:decimal}
+.fn-back{text-decoration:none}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding-block:2px}
+
+/* 5 October 2026, decided with Tonn: one right edge, and a larger page on desktop. The header's aims
+   box and the rule under each section title now span the content width, like the frame bar, the
+   widgets and the callouts; running text keeps its reading measure (title 24em, lede 62ch). On
+   screens 1100 px and wider, text goes up one step (16 to 17 px) and the page from 1160 to 1240 px;
+   narrower screens, phones included, are unchanged. Fixed-size widget labels stay as they are. */
+.hdr-aims{max-width:none}
+.terra-sec-head{max-width:none}
+.terra-sec-contour{max-width:none}
+.terra-sec-title{max-width:24em}
+@media (min-width:1100px){
+  html{font-size:17px}
+  body{font-size:17px}
+  .terra-page{max-width:1240px}
+}
+
+/* 6 October 2026, decided with Tonn: sub-headings are real headings. "###" sub-headings are <h3>
+   (they were styled paragraphs), and the three time cards under chapter 2's "How time works on each
+   component" are <h4>, so the outline nests: page h1, section h2, sub-heading h3, card h4. These two
+   rules draw them exactly as before (checked pixel for pixel on chapters 1-3, desktop and phone). */
+.terra-split-text h3.sub-head{margin:0 0 12px}
+.tcard h4{margin:0;font-size:1rem;line-height:1.3;color:var(--heading)}
+
+/* 6 October 2026, decided with Tonn: widgets as web components. A widget's element (<period-rates
+   data-widget>) draws its parts straight into the page; display:contents keeps the element itself out
+   of the layout, so its parts sit in the box exactly as when they were hand-built. */
+[data-widget]{display:contents}
+
+/* 6 October 2026, decided with Tonn (Terra grammar v0.2, Teaching shared/design/terra/DESIGN.md).
+   Colours are named by their role (--population, --push-up, --frame …), each pointing at a value in
+   Terra's world (--terra-sea, --terra-lava, --terra-space …); the page background is --page. The
+   rename changed no colour (every value resolves as before, light and dark). Then the review's changes:
+   1 empty dots (no diabetes) outlined at 3:1; 2 a ▲/▼ value in a readout is a value, not a label (the
+   ".terra-read span" rule had caught it); 3 feedback: only what needs attention is coloured, ✗ and
+   costs in magma's text tone (5.2:1), ✓ and buys in space; 4 the keyboard focus ring in space, not a
+   force colour (cloud was under 3:1 on the stone panels); 5 data are slate, as Terra 1.2.1 says (threads
+   are never ordinary data): chapter 4 §15's age bands (were ground brown) and chapter 1 §6's Hogwarts
+   bar (was ground) are slate, the place told apart by its label. */
+:root{--terra-lava-text:#cb3400;--attention-text:var(--terra-lava-text);--dot-outline:#8f9499}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--terra-lava-text:var(--terra-lava);--dot-outline:#5d6a76}}
+:root[data-theme="dark"]{--terra-lava-text:var(--terra-lava);--dot-outline:#5d6a76}
+.d-no{stroke:var(--dot-outline)}
+.terra-read b span{display:inline;font-size:inherit;line-height:inherit;color:inherit}
+.chk-list .ok{color:var(--ink)}.chk-list .no{color:var(--attention-text)}
+.trade td.gain{color:var(--ink)}.trade td.cost{color:var(--attention-text)}
+.terra :focus-visible{outline-color:var(--ink)}
+.p2 .seg-y{fill:var(--data-band);stroke:var(--data-slate)}
+.p2 .seg-o{fill:var(--data-slate);stroke:var(--data-slate)}
+.bar-a{fill:var(--data-slate)}
+
+/* 6 October 2026, Terra 1.4: the page is paper, as a slide is. Below 1,300 px the paper fills the view;
+   from 1,300 px the column is a paper sheet and the sky (with Terra's clouds, drawn by Teaching
+   shared/design/terra/sky/clouds.mjs) shows around it, fixed while the sheet scrolls, never under text.
+   Terra 1.4's names: --terra-lava and --terra-rain (were magma and cloud), --sky (was --page). */
+body{background:var(--paper)}
+@media (min-width:1300px){
+  body{background:url(clouds-day.svg) center / cover no-repeat fixed,var(--sky)}
+  .terra-page{background:var(--paper);box-shadow:0 0 0 1px var(--rule);border-radius:var(--radius-md);margin-block:24px}
+}
+@media (min-width:1300px) and (prefers-color-scheme:dark){:root:not([data-theme="light"]) body{background-image:url(clouds-night.svg)}}
+@media (min-width:1300px){:root[data-theme="dark"] body{background-image:url(clouds-night.svg)}}
+
+/* 3 November 2026, the brief edition's lifeline figures (widgets/life-lines.js; marks in Teaching
+   shared/design/terra/DESIGN.md, lifeline marks): one ink for every line; weight says diabetes (thin
+   free, thick has it), opacity what the study sees (is-dim, as elsewhere: not seen), a dash what it looks back on.
+   Colour stays with the three boxes beside each figure: a card callout in a split's text column stacks. */
+.ll .ll-thin{stroke:var(--data-slate);stroke-width:1.5;stroke-linecap:butt}
+.ll .ll-thick{stroke:var(--data-slate);stroke-width:5;stroke-linecap:butt}
+.ll .ll-back{stroke-dasharray:4 3}
+.ll .ll-date{stroke:var(--ink);stroke-width:1.2;stroke-dasharray:2 3}
+.ll .ll-visit{stroke:var(--data-slate);stroke-width:1.5}
+.ll text.ll-hd{font-size:13px;font-weight:600;fill:var(--heading)}
+.fig-svg.ll{max-width:520px;margin-inline:auto}
+.ll-bare{margin:8px 0 2px}
+.terra-split-text .tcard{margin:0 0 12px}
+
+/* 3 November 2026, chapter 1's three recap figures (includes/lens/): the population boxes nest, the
+   target's edge faint and dashed because it is rarely known; a measurement's readings are short upright
+   strokes on a value line, never dots (a dot means diabetes); one number's parts carry their
+   component's thread as a left rule. Marks in Teaching shared/design/terra/DESIGN.md. */
+.lf .pf-target{fill:none;stroke:var(--population);stroke-width:1.5;stroke-dasharray:6 5;opacity:.75}
+.lf .pf-source{fill:var(--population-tint);stroke:var(--population);stroke-width:1.2}
+.lf .pf-study{fill:var(--paper);stroke:var(--population);stroke-width:1.2}
+.lf .pf-an{fill:var(--population)}
+.lf text.on{fill:var(--on-component)}
+.lf text.pf-out{fill:var(--muted);font-style:italic}
+.lf .mb{fill:var(--measurement-tint);stroke:var(--measurement);stroke-width:1}
+.lf .rec{fill:var(--panel);stroke:var(--rule);stroke-width:1}
+.lf .arw{stroke:var(--muted);stroke-width:1.2}
+.lf .ah{fill:var(--muted)}
+.lf .rd{stroke:var(--data-slate);stroke-width:2.2}
+.anat{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center}
+@media (max-width:520px){.anat{grid-template-columns:minmax(0,1fr)}}
+.anat-num{display:flex;flex-direction:column;align-items:center;font-family:var(--font-display);color:var(--heading)}
+.anat-num span{font-size:2.4rem;line-height:1.05;font-weight:600}
+.anat-num i{display:block;width:52px;border-top:2px solid var(--heading);margin:4px 0}
+.anat-num small{margin-top:8px;font-family:var(--font-text);font-size:.8rem;line-height:1.35;color:var(--muted);text-align:center}
+.anat-parts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.anat-parts li{padding:4px 12px;border-left:4px solid var(--terra-t);font-size:.92rem;line-height:1.5}
+.anat-parts em{display:block;font-style:normal;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.anat-parts b{color:var(--heading)}
+/* 3 November 2026, chapter 5's districts figure (includes/describe/eco-fig.html): a district is a
+   labelled square, never a dot (a dot is a person, filled when they have diabetes). */
+.lf .eco-unit{fill:var(--data-slate)}
+.lf .eco-line{fill:none;stroke:var(--muted);stroke-width:1.2}
+.fig-svg.lf-narrow{max-width:520px;margin-inline:auto}
+/* 3 November 2026, chapter 5's describe figures (includes/describe/*-fig.html, drawn by
+   units/study-design/scripts/make_describe_figs.py): one number in slate. A bar is a group's share from 0; the line
+   through it, its 95% interval; a time series is a line without dots (a dot is a person); a district is shaded,
+   stronger for a higher share, with its share printed on it. Marks in Teaching shared/design/terra/DESIGN.md. */
+.dz .bar{fill:color-mix(in srgb,var(--data-slate) 45%,var(--paper))}
+.dz .ci{stroke:var(--ink);stroke-width:1.3}
+.dz .est{stroke:var(--ink);stroke-width:3}
+.dz .series{fill:none;stroke:var(--data-slate);stroke-width:2.4;stroke-linejoin:round;stroke-linecap:round}
+.dz .dist{stroke:var(--paper);stroke-width:1.4;stroke-linejoin:round}
+.dz .coast{fill:none;stroke:var(--muted);stroke-width:1}
+.dz .sw{stroke:var(--muted);stroke-width:.8}
+.dz .ch1{fill:color-mix(in srgb,var(--data-slate) 12%,var(--paper))}
+.dz .ch2{fill:color-mix(in srgb,var(--data-slate) 32%,var(--paper))}
+.dz .ch3{fill:color-mix(in srgb,var(--data-slate) 58%,var(--paper))}
+.dz .ch4{fill:color-mix(in srgb,var(--data-slate) 88%,var(--paper))}
+/* 4 November 2026: a list in a split's text column reads as prose (chapters 1 and 5), with a paragraph's gap after it. */
+.terra-split-text .chk-list{margin:0 0 12px;font-size:inherit;line-height:inherit}
+
+/* 5 November 2026, the brief edition's lifeline figures redrawn (widgets/life-lines.js; marks in
+   Teaching shared/design/terra/DESIGN.md, lifeline marks, agreed with Tonn that day): the same lives in
+   every design, and the design only moves what is drawn thick. Shade is the exposure the design compares (slate,
+   faint slate; grey before a trial's coin); weight says what the design has data on (thick) or not (thin;
+   the pale veil was removed the same day so a thin line keeps its colour); dots are the outcome (filled or open where the study
+   records it); the line dashed once diabetes starts. Three marks, from Tonn later the same day. The 3 November classes above (.ll) stay for chapter 1's staff figure until it is redrawn. */
+.lv .lv-e{--lv:var(--data-slate);--lv-m:var(--data-slate)}
+.lv .lv-n{--lv:color-mix(in srgb,var(--data-slate) 42%,var(--paper));--lv-m:color-mix(in srgb,var(--data-slate) 60%,var(--paper))}
+.lv .lv-0{--lv:var(--data-context);--lv-m:var(--data-context)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lv .lv-n{--lv:color-mix(in srgb,var(--data-slate) 50%,var(--paper));--lv-m:color-mix(in srgb,var(--data-slate) 68%,var(--paper))}}
+:root[data-theme="dark"] .lv .lv-n{--lv:color-mix(in srgb,var(--data-slate) 50%,var(--paper));--lv-m:color-mix(in srgb,var(--data-slate) 68%,var(--paper))}
+.lv .lv-line{stroke:var(--lv);stroke-width:3.6;stroke-linecap:butt}
+.lv .lv-on,.lv .lv-yes{fill:var(--lv-m)}
+.lv .lv-on{stroke:var(--paper);stroke-width:1.2}
+.lv .lv-no{fill:var(--paper);stroke:var(--lv-m);stroke-width:2}
+.lv .lv-ill{stroke-dasharray:5 3.5}.lv .lv-tip{fill:none;stroke:var(--lv-m);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}.lv .lv-ill-k{stroke-dasharray:2.6 2}
+.lv .lv-under .lv-line{stroke-width:1.4}
+.lv .lv-under .lv-ill{stroke-dasharray:3 3}
+.lv .lv-tri,.lv .lv-coin{fill:var(--heading)}
+/* chapter 5's widgets (7 November 2026): the funnel's upper 95% limit, a plain line (hotspot-check); a policy date, a dotted upright labelled in words (policy-trend) */
+.dz .fn-lim{fill:none;stroke:var(--muted);stroke-width:1.4;stroke-linejoin:round}
+.dz .policy{stroke:var(--heading);stroke-width:1.4;stroke-dasharray:1 4;stroke-linecap:round}
+/* chapter 5's eco-levels (8 November 2026): a district a labelled square with a paper edge; a person a dot, filled at 126 or more; the line across the districts muted; the line through all the people faint, under the dots; a district's own line only when brought forward, over a paper halo; the other districts faded */
+.dz .eco-sq .eco-unit{stroke:var(--paper);stroke-width:1.5}
+.dz .eco-p{stroke-width:1.3}
+.dz .eco-p.d-case{stroke:var(--data-slate)}
+.dz .eco-across{fill:none;stroke:var(--muted);stroke-width:1.8;stroke-linecap:round}
+.dz .eco-pool{stroke:var(--data-slate);stroke-width:1.6;stroke-linecap:round;opacity:.45}
+.dz .eco-in{stroke:var(--data-slate);stroke-width:2.6;stroke-linecap:round}
+.dz .eco-in-k{stroke:var(--paper);stroke-width:6;stroke-linecap:round}
+.dz .eco-fade{opacity:.16}
+.dz .eco-sq.eco-fade{opacity:.4}
+.dz .eco-pick{cursor:pointer}
+.lv .lv-coin-no{fill:var(--paper);stroke:var(--heading);stroke-width:1.5}
+.lv .lv-date{stroke:var(--heading);stroke-width:1.4;stroke-dasharray:3 3}
+.lv .lv-link{stroke:var(--heading);stroke-width:1.3}
+.lv .lv-box{fill:color-mix(in srgb,var(--heading) 11%,transparent);stroke:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .lv .lv-box{fill:color-mix(in srgb,var(--heading) 16%,transparent)}}
+:root[data-theme="dark"] .lv .lv-box{fill:color-mix(in srgb,var(--heading) 16%,transparent)}
+.lv .lv-visit{stroke:var(--muted);stroke-width:1.4}
+.lv text.lv-hd{font-size:13px;font-weight:600;fill:var(--heading)}
+.lv text.lv-row,.lv text.lv-word{font-size:10.5px;fill:var(--muted)}
+.lv text.lv-tag{paint-order:stroke;stroke:var(--paper);stroke-width:4px;stroke-linejoin:round}
+.lv text.lv-k{font-size:11.5px}
+.lv text.lv-kh{font-size:11px;font-weight:600;fill:var(--heading);letter-spacing:.04em;text-transform:uppercase}
+.fig-svg.lv{max-width:520px;margin-inline:auto}
+
+/* 6 November 2026: a figure's number ("Figure 2.1", sewn's numbered figures) leads its title, a step
+   darker than the title, so the label a link names can be found; mono and capitals as the title. Set by
+   templates/blocks/figure-number.html in includes and by kit.js's frame in widgets. --heading has its
+   own light and dark value. */
+.terra-w-num{color:var(--heading);font-weight:500;white-space:nowrap}
+/* 6 November 2026: a segmented choice the other answers rule out (design-name) */
+.terra-seg button:disabled{color:var(--muted,var(--ink));opacity:.4;cursor:not-allowed;background:var(--paper)}
+/* 6 November 2026, approved by Tonn: chapter 3's nutshell table (^nutshell in pages/designs.md) fits a
+   phone. Below 560 px (where .mtab's 520 px minimum would scroll) each row's first cell, and the "Design"
+   header, take a line of their own; the three component cells sit side by side under it. Layout only:
+   every word stays in the page, and desktop is unchanged. */
+@media (max-width:560px){
+  #nutshell .mtab,#nutshell thead,#nutshell tbody{display:block;min-width:0}
+  #nutshell tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  #nutshell th,#nutshell td{padding:6px}
+  #nutshell th:first-child,#nutshell td:first-child{grid-column:1/-1;border-bottom:0;padding-bottom:0}
+  #nutshell td:first-child{padding-top:12px}
+}
