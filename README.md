@@ -2,7 +2,7 @@
 
 A companion to the lecture and workshops on study design and descriptive epidemiology (EPI-II), Department of Epidemiology, Faculty of Medicine, Prince of Songkla University.
 
-Songyos Rajborirug, M.D., Ph.D. · Brief edition b9, November 2026.
+Songyos Rajborirug, M.D., Ph.D. · Brief edition b10, November 2026.
 
 Read it at <https://songyosr.github.io/study-design-reading/>.
 
